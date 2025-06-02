@@ -4,8 +4,8 @@ import "./App.css";
 import Button from "./assets/Button/Button.tsx";
 
 function App() {
-  const [timer, setTimer] = useState(0.0);
-  const [inputValue, setInputValue] = useState(1);
+  const [timer, setTimer] = useState(1);
+  const [inputValue, setInputValue] = useState("");
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const input: number = Number(event.target.value);
@@ -15,6 +15,27 @@ function App() {
 
   function testFunction(targetName: string) {
     alert(targetName + " clicked");
+  }
+
+  function updateTimeLeft() {
+    let newTime: number = 0;
+    console.log("1newTime =", newTime);
+    newTime += timer;
+    console.log("2newTime =", newTime);
+    //console.log("type of newTime =", typeof newTime);
+    newTime = newTime - 1;
+    //console.log("type of newTime =", typeof newTime);
+    console.log("3newTime =", newTime);
+    setTimer(newTime);
+    console.log("timeleft =", timer);
+  }
+
+  function runTimer() {
+    let countDownValue = timer;
+    if (timer > 9) {
+      setInterval(updateTimeLeft, 1000);
+      console.log("timer =", timer);
+    }
   }
 
   return (
@@ -27,12 +48,7 @@ function App() {
         <p>{timer}s</p>
       </div>
       <div className="buttons">
-        <Button
-          clickHandler={(event) => {
-            testFunction(event.currentTarget.innerText);
-          }}
-          buttonName={"Start"}
-        />
+        <Button clickHandler={runTimer} buttonName={"Start"} />
         <Button
           clickHandler={(event) => {
             testFunction(event.currentTarget.innerText);
