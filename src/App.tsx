@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import type { ChangeEvent } from "react";
 import "./App.css";
 import Button from "./assets/Button/Button.tsx";
@@ -9,6 +9,8 @@ function App() {
   useEffect(() => {
     runTimer;
   }, []);
+  let countDownValue = useRef("");
+  //useMemo(() => currentTime, [currentTime]);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const input: number = Number(event.target.value);
@@ -20,10 +22,8 @@ function App() {
     alert(targetName + " clicked");
   }
 
-  //
-
   function runTimer() {
-    let countDownValue = setInterval(() => {
+    countDownValue = setInterval(() => {
       setTimer((time) => {
         if (time <= 0) {
           clearInterval(countDownValue);
@@ -31,6 +31,11 @@ function App() {
         } else return time - 1;
       });
     }, 10);
+  }
+
+  function pauseTimer() {
+    console.log("countDownValue =", countDownValue);
+    clearInterval(countDownValue);
   }
 
   return (
@@ -44,12 +49,7 @@ function App() {
       </div>
       <div className="buttons">
         <Button clickHandler={runTimer} buttonName={"Start"} />
-        <Button
-          clickHandler={(event) => {
-            testFunction(event.currentTarget.innerText);
-          }}
-          buttonName={"Pause"}
-        />
+        <Button clickHandler={pauseTimer} buttonName={"Pause"} />
         <Button
           clickHandler={(event) => {
             testFunction(event.currentTarget.innerText);
