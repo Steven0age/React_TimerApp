@@ -4,16 +4,16 @@ import "./App.css";
 import Button from "./assets/Button/Button.tsx";
 
 function App() {
-  const [timer, setTimer] = useState<number | undefined>();
-  const [inputValue, setInputValue] = useState<number>();
+  const [timer, setTimer] = useState<number>(0);
+  //const [inputValue, setInputValue] = useState<number>();
   useEffect(() => {
     runTimer;
   }, []);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const input: number = Number(event.target.value);
-    setInputValue(input);
-    setTimer(input);
+    //setInputValue(input);
+    setTimer(input * 100);
   }
 
   function testFunction(targetName: string) {
@@ -25,12 +25,12 @@ function App() {
   function runTimer() {
     let countDownValue = setInterval(() => {
       setTimer((time) => {
-        if (time === 0 || time === undefined) {
+        if (time <= 0) {
           clearInterval(countDownValue);
           return 0;
         } else return time - 1;
       });
-    }, 1000);
+    }, 10);
   }
 
   return (
@@ -40,7 +40,7 @@ function App() {
       <input type="number" onChange={handleInputChange}></input>
       <div className="time-left">
         <p>Time left:</p>
-        <p>{timer}s</p>
+        <p>{(timer / 100).toFixed(2)} s</p>
       </div>
       <div className="buttons">
         <Button clickHandler={runTimer} buttonName={"Start"} />
