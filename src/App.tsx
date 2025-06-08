@@ -5,7 +5,7 @@ import Button from "./assets/Button/Button.tsx";
 
 function App() {
   const [timer, setTimer] = useState<number>(0);
-  //const [inputValue, setInputValue] = useState<number>();
+  const [inputValue, setInputValue] = useState<number>(0);
   useEffect(() => {
     runTimer;
   }, []);
@@ -13,9 +13,9 @@ function App() {
   //useMemo(() => currentTime, [currentTime]);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const input: number = Number(event.target.value);
-    //setInputValue(input);
-    setTimer(input * 100);
+    const input: number = Number(event.target.value) * 100;
+    setInputValue(input);
+    setTimer(input);
   }
 
   function testFunction(targetName: string) {
@@ -41,6 +41,11 @@ function App() {
     clearInterval(countDownValue.current);
   }
 
+  function resetTimer() {
+    setTimer(inputValue);
+    clearInterval(countDownValue.current);
+  }
+
   return (
     <div className="app">
       <h1>Timer App</h1>
@@ -53,12 +58,7 @@ function App() {
       <div className="buttons">
         <Button clickHandler={runTimer} buttonName={"Start"} />
         <Button clickHandler={pauseTimer} buttonName={"Pause"} />
-        <Button
-          clickHandler={(event) => {
-            testFunction(event.currentTarget.innerText);
-          }}
-          buttonName={"Reset"}
-        />
+        <Button clickHandler={resetTimer} buttonName={"Reset"} />
       </div>
     </div>
   );
