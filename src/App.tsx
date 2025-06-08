@@ -23,10 +23,13 @@ function App() {
   }
 
   function runTimer() {
-    countDownValue = setInterval(() => {
+    if (countDownValue.current) {
+      clearInterval(countDownValue.current);
+    }
+    countDownValue.current = setInterval(() => {
       setTimer((time) => {
         if (time <= 0) {
-          clearInterval(countDownValue);
+          clearInterval(countDownValue.current);
           return 0;
         } else return time - 1;
       });
@@ -35,7 +38,7 @@ function App() {
 
   function pauseTimer() {
     console.log("countDownValue =", countDownValue);
-    clearInterval(countDownValue);
+    clearInterval(countDownValue.current);
   }
 
   return (
