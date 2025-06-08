@@ -18,10 +18,6 @@ function App() {
     setTimer(input);
   }
 
-  function testFunction(targetName: string) {
-    alert(targetName + " clicked");
-  }
-
   function runTimer() {
     if (countDownValue.current) {
       clearInterval(countDownValue.current);
