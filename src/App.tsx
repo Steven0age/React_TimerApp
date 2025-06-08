@@ -2,28 +2,29 @@ import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
 import "./App.css";
 import Button from "./assets/Button/Button.tsx";
+import { useTimerInput } from "./hooks/useTimerInput.ts";
 
 function App() {
-  const [timer, setTimer] = useState<number>(0);
+  const formInput = useTimerInput(0);
+  const [timer, setTimer] = useState<number>(formInput.timer);
   const [inputValue, setInputValue] = useState<number>(0);
   useEffect(() => {
     runTimer;
   }, []);
   let countDownValue = useRef<number>(0);
-  //useMemo(() => currentTime, [currentTime]);
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const input: number = Number(event.target.value) * 100;
-    setInputValue(input);
-    setTimer(input);
-  }
+  // function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+  //   const input: number = Number(event.target.value) * 100;
+  //   setInputValue(input);
+  //   setTimer(input);
+  // }
 
   function runTimer() {
     if (countDownValue.current) {
       clearInterval(countDownValue.current);
     }
     countDownValue.current = setInterval(() => {
-      setTimer((time) => {
+      formInput.setTimer((time) => {
         if (time <= 0) {
           clearInterval(countDownValue.current);
           return 0;
@@ -38,7 +39,7 @@ function App() {
   }
 
   function resetTimer() {
-    setTimer(inputValue);
+    formInput.setTimer(formInput.inputValue);
     clearInterval(countDownValue.current);
   }
 
@@ -46,10 +47,11 @@ function App() {
     <div className="app">
       <h1>Timer App</h1>
       <p> Zeit festlegen</p>
-      <input type="number" onChange={handleInputChange}></input>
+      <input type="number" onChange={formInput.handleInputChange}></input>
       <div className="time-left">
         <p>Time left:</p>
-        <p>{(timer / 100).toFixed(2)} s</p>
+        {/* <p>{(timer / 100).toFixed(2)} s</p> */}
+        <p>{formInput.timer} s</p>
       </div>
       <div className="buttons">
         <Button clickHandler={runTimer} buttonName={"Start"} />
