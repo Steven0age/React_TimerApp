@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
 import "./App.css";
 import Button from "./assets/Button/Button.tsx";
@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     runTimer;
   }, []);
-  let countDownValue = useRef("");
+  let countDownValue = useRef<number>(0);
   //useMemo(() => currentTime, [currentTime]);
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
