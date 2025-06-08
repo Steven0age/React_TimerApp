@@ -1,31 +1,26 @@
-import { useState, useEffect, useRef } from "react";
-import type { ChangeEvent } from "react";
+import { useEffect, useRef } from "react";
 import "./App.css";
 import Button from "./assets/Button/Button.tsx";
 import { useTimerInput } from "./hooks/useTimerInput.ts";
 
 function App() {
-  const formInput = useTimerInput(0);
-  const [timer, setTimer] = useState<number>(formInput.timer);
-  const [inputValue, setInputValue] = useState<number>(0);
+  const timerHook = useTimerInput(0);
+
   useEffect(() => {
     runTimer;
   }, []);
-  let countDownValue = useRef<number>(0);
 
-  // function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-  //   const input: number = Number(event.target.value) * 100;
-  //   setInputValue(input);
-  //   setTimer(input);
-  // }
+  let countDownValue = useRef<number>(0);
 
   function runTimer() {
     if (countDownValue.current) {
       clearInterval(countDownValue.current);
     }
+    timerHook.setIsRunning(true);
     countDownValue.current = setInterval(() => {
-      formInput.setTimer((time) => {
+      timerHook.setTimer((time) => {
         if (time <= 0) {
+          timerHook.setIsRunning(false);
           clearInterval(countDownValue.current);
           return 0;
         } else return time - 1;
@@ -34,12 +29,13 @@ function App() {
   }
 
   function pauseTimer() {
-    console.log("countDownValue =", countDownValue);
+    timerHook.setIsRunning(false);
     clearInterval(countDownValue.current);
   }
 
   function resetTimer() {
-    formInput.setTimer(formInput.inputValue);
+    timerHook.setTimer(timerHook.inputValue);
+    timerHook.setIsRunning(false);
     clearInterval(countDownValue.current);
   }
 
@@ -47,11 +43,14 @@ function App() {
     <div className="app">
       <h1>Timer App</h1>
       <p> Zeit festlegen</p>
-      <input type="number" onChange={formInput.handleInputChange}></input>
+      <input
+        disabled={timerHook.isRunning}
+        type="number"
+        onChange={timerHook.handleInputChange}
+      ></input>
       <div className="time-left">
         <p>Time left:</p>
-        {/* <p>{(timer / 100).toFixed(2)} s</p> */}
-        <p>{formInput.timer} s</p>
+        <p>{(timerHook.timer / 100).toFixed(2)} s</p>
       </div>
       <div className="buttons">
         <Button clickHandler={runTimer} buttonName={"Start"} />
